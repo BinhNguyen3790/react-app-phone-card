@@ -12,7 +12,7 @@ class PhoneList extends Component {
     return this.dataPhone.map((phone, index) => {
       return (
         <div key={index} className="col-4">
-          <PhoneItem phone={phone} />
+          <PhoneItem phone={phone} addCard={this.props.addCard} />
         </div>
       );
     });
