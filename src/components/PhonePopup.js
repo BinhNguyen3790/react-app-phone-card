@@ -8,22 +8,62 @@ class PhonePopup extends Component {
         <tr key={index}>
           <td>{sanpham.maSP}</td>
           <td>{sanpham.tenSP}</td>
-          <td width="20%">
+          <td width="10%">
             <img src={sanpham.hinhAnh} alt={sanpham.maSP} style={{ width: "100%" }} />
           </td>
-          <td>{sanpham.soLuong}</td>
-          <td>{sanpham.donGia}</td>
-          <td>{sanpham.donGia * sanpham.soLuong}</td>
+          <td>
+            <button
+              className="btn btn-success me-3"
+              style={{ width: "40px" }}
+              onClick={() => {
+                this.props.changeSoLuong(sanpham.maSP, 1);
+              }}
+            >
+              +
+            </button>
+            {sanpham.soLuong}
+            <button
+              className="btn btn-success ms-3"
+              style={{ width: "40px" }}
+              onClick={() => {
+                this.props.changeSoLuong(sanpham.maSP, -1);
+              }}
+            >
+              -
+            </button>
+          </td>
+          <td>{sanpham.donGia.toLocaleString()}</td>
+          <td>{(sanpham.donGia * sanpham.soLuong).toLocaleString()}</td>
+          <td>
+            <button
+              onClick={() => {
+                this.props.deleteProduct(sanpham.maSP);
+              }}
+              className="btn btn-danger"
+            >
+              Delete
+            </button>
+          </td>
         </tr>
       );
     });
   };
+
+  tinhTongTien = () => {
+    let { gioHang } = this.props;
+    return gioHang
+      .reduce((tongTien, spGioHang) => {
+        return (tongTien += spGioHang.soLuong * spGioHang.donGia);
+      }, 0)
+      .toLocaleString();
+  };
+
   render() {
     return (
       <div className="container">
         <div className="d-flex">
           <button className="btn ms-auto" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Card: 0 <i className="fa fa-shopping-cart" aria-hidden="true"></i>
+            Card: {this.props.calcProduct()} <i className="fa fa-shopping-cart" aria-hidden="true"></i>
           </button>
           <div className="modal fade" id="exampleModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div className="modal-dialog" style={{ minWidth: 1000 }}>
@@ -36,7 +76,7 @@ class PhonePopup extends Component {
                 </div>
                 <div className="modal-body">
                   <div className="table-responsive">
-                    <table className="table">
+                    <table className="table" style={{ verticalAlign: "middle" }}>
                       <thead>
                         <tr>
                           <th scope="col">Mã Sản Phẩm</th>
@@ -45,9 +85,17 @@ class PhonePopup extends Component {
                           <th scope="col">Số Lượng</th>
                           <th scope="col">Đơn Giá</th>
                           <th scope="col">Giá Bán</th>
+                          <th scope="col">Hành động</th>
                         </tr>
                       </thead>
                       <tbody>{this.renderCard()}</tbody>
+                      <tfoot>
+                        <tr>
+                          <td colSpan="5"></td>
+                          <td>Sum Price:</td>
+                          <td>{this.tinhTongTien()}</td>
+                        </tr>
+                      </tfoot>
                     </table>
                   </div>
                 </div>

@@ -9,13 +9,13 @@ class PhoneItem extends Component {
         <div className="card-body">
           <h5 className="card-title">{phone.tenSP}</h5>
           <p className="card-text">{phone.manHinh}</p>
-          <p className="card-text">{phone.giaBan}VND</p>
+          <p className="card-text">{phone.giaBan.toLocaleString()} VND</p>
           <button
             onClick={() => {
               this.props.addCard(phone);
             }}
             className="btn btn-primary"
-           >
+          >
             Add to Card
           </button>
         </div>
